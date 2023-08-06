@@ -8,11 +8,22 @@
 
 .square {
   display: table-cell;
-  background-color: blue;
   border-style: solid;
   padding: 30px;
 }
 
+.black-square {
+  background-color: green;
+}
+
+.white-square {
+  background-color: white;
+}
+
 .highlighted {
   background-color: red;
+}
+
+.clicked {
+  background-color: blue;
 }
