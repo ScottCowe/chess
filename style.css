@@ -1,0 +1,18 @@
+#board-container {
+
+}
+
+.board-row {
+
+}
+
+.square {
+  display: table-cell;
+  background-color: blue;
+  border-style: solid;
+  padding: 30px;
+}
+
+.highlighted {
+  background-color: red;
+}
