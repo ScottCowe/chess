@@ -9,7 +9,8 @@
 .square {
   display: table-cell;
   border-style: solid;
-  padding: 30px;
+  width: 66px;
+  height: 66px;
 }
 
 .black-square {
