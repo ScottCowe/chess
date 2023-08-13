@@ -8,7 +8,7 @@ class Square {
 
   set(piece) {
     this.piece = piece
-    document.getElementsByClassName("square")[this.index].innerHTML = "<img src='svgs/" + this.piece + ".svg'>"
+    document.getElementsByClassName("square")[this.index].innerHTML = (piece != "") ? "<img src='svgs/" + this.piece + ".svg'>" : ""
   }
 }
 
@@ -56,6 +56,14 @@ class Board {
     return square.id
   }
 
+  setBoard(to) {
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        this.setSquare(i, j, to[i][j])
+      }
+    }
+  }
+
   getBoard() {
     let board = []
 
@@ -71,7 +79,7 @@ class Board {
   }
 
   onSquareClicked(row, col) {
-    console.log("Square " + row + " " + col + " clicked")
+    //console.log("Square " + row + " " + col + " clicked")
     //const index = 8 * row + col
     //const squares = document.getElementsByClassName("square")
     //let clickedSquare = squares[index]
@@ -84,8 +92,7 @@ window.onload = function() {
   const board = new Board()
   board.createBoard()
 
-  board.setSquare(0, 5, "p")
-  board.setSquare(7, 2, "K")
-
-  console.log(board.getBoard())
+  const position = new FENPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  board.setBoard(position.board)
+  console.log(position.board)
 }
