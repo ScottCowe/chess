@@ -52,10 +52,29 @@ class Move {
   }
 
   isLegal() {
-    return true
+    // Check whose turn it is
+    const fromPiece = this.from.piece
+    const whiteMove = this.position.whiteMove
+
+    if ((fromPiece == fromPiece.toLowerCase()) == whiteMove) {
+      return true
+    }
+
+    return false
   }
 
   doMove() {
-    // return new position
+    if (!this.isLegal()) {
+      // Move is illegal
+      return this.position
+    }
+
+    const newPosition = this.position
+    newPosition.whiteMove = !this.position.whiteMove
+
+    newPosition.board[this.from.row][this.from.col] = ""
+    newPosition.board[this.to.row][this.to.col] = this.from.piece
+
+    return newPosition
   }
 }

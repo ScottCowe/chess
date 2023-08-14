@@ -8,7 +8,11 @@ class Square {
 
   set(piece) {
     this.piece = piece
-    document.getElementsByClassName("square")[this.index].innerHTML = (piece != "") ? "<img src='svgs/" + this.piece + ".svg'>" : ""
+    document.getElementsByClassName("square")[this.index].innerHTML = this.isOccupied() ? "<img src='svgs/" + this.piece + ".svg'>" : ""
+  }
+
+  isOccupied() {
+    return (this.piece != "")
   }
 }
 
@@ -53,7 +57,7 @@ class Board {
 
   getSquare(row, col) {
     const square = this.squares[row][col]
-    return square.id
+    return square.piece
   }
 
   setBoard(to) {
@@ -79,6 +83,20 @@ class Board {
   }
 
   onSquareClicked(row, col) {
+    const clickedSquares = document.getElementsByClassName("clicked")
+
+    if (clickedSquares == []) {
+      this.squares[row][col].classList.add("clicked")
+      return
+    }
+
+    const fromSquare = this.squares[clickedSquares[0].row][clickedSquares[0].col]
+    const toSquare = this.squares[row][col]
+
+    //const move = new Move(fromSquare, toSquare, )
+    // Bruh what the fuck redesign your code
+
+
     //console.log("Square " + row + " " + col + " clicked")
     //const index = 8 * row + col
     //const squares = document.getElementsByClassName("square")
@@ -92,7 +110,9 @@ window.onload = function() {
   const board = new Board()
   board.createBoard()
 
-  const position = new FENPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  const position = new FENPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1")
   board.setBoard(position.board)
-  console.log(position.board)
+
+  const move = new Move(board.squares[6][1], board.squares[4][1], position)
+  board.setBoard(move.doMove().board) // If this returns the same position that was passed in the move is illegal
 }
