@@ -14,11 +14,26 @@ class Square {
   isOccupied() {
     return (this.piece != "")
   }
+
+  setClicked(bool) {
+    if (bool) {
+      document.getElementsByClassName("square")[this.index].classList.add("clicked")
+    }
+    else {
+      document.getElementsByClassName("square")[this.index].classList.remove("clicked")
+    }
+  }
+
+  setHighlighted(bool) {
+
+  }
 }
 
 class Board {
   constructor() {
     this.squares = []
+    this.position = ""
+    this.clickedSquare = undefined
   }
 
   createBoard() {
@@ -48,6 +63,15 @@ class Board {
         square.addEventListener("click", () => { this.onSquareClicked(i, j) })
       }
     }
+  }
+
+  setPosition(position) {
+    this.position = position
+    this.setBoard(position.board)
+  }
+
+  getPosition() {
+    return this.position
   }
 
   setSquare(row, col, to) {
@@ -83,26 +107,21 @@ class Board {
   }
 
   onSquareClicked(row, col) {
-    const clickedSquares = document.getElementsByClassName("clicked")
-
-    if (clickedSquares == []) {
-      this.squares[row][col].classList.add("clicked")
+    if (this.clickedSquare == undefined) {
+      this.squares[row][col].setClicked(true)
+      this.clickedSquare = this.squares[row][col]
       return
     }
 
-    const fromSquare = this.squares[clickedSquares[0].row][clickedSquares[0].col]
+    const fromSquare = this.clickedSquare
     const toSquare = this.squares[row][col]
 
-    //const move = new Move(fromSquare, toSquare, )
-    // Bruh what the fuck redesign your code
+    this.clickedSquare.setClicked(false)
+    this.clickedSquare = undefined
 
-
-    //console.log("Square " + row + " " + col + " clicked")
-    //const index = 8 * row + col
-    //const squares = document.getElementsByClassName("square")
-    //let clickedSquare = squares[index]
-    //clickedSquare.classList.add("clicked")
-    //clickedSquare.innerHTML = "<img src='svgs/p.svg'>"
+    const move = new Move(fromSquare, toSquare, this.position)
+    const newPosition = move.doMove()
+    this.setPosition(newPosition)
   }
 }
 
@@ -110,9 +129,6 @@ window.onload = function() {
   const board = new Board()
   board.createBoard()
 
-  const position = new FENPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1")
-  board.setBoard(position.board)
-
-  const move = new Move(board.squares[6][1], board.squares[4][1], position)
-  board.setBoard(move.doMove().board) // If this returns the same position that was passed in the move is illegal
+  const position = new FENPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  board.setPosition(position)
 }
